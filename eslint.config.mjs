@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored byte-exact ThreeUI runtime; must stay untouched so its SHA-256 holds.
+    "public/landing-pages/**",
   ]),
 ]);
 
