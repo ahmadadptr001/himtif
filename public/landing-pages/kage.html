@@ -407,22 +407,11 @@
         display: block;
         height: 15px;
         line-height: 15px;
-        transition:
-          transform 0.55s var(--ease-out),
-          color 0.3s;
+        transition: color 0.3s;
       }
-      .nav-link .alt {
-        position: absolute;
-        inset: 0;
-        transform: translate3d(0, 100%, 0);
+      .nav-link:hover,
+      .nav-link:focus-visible {
         color: var(--bone);
-        letter-spacing: 0.32em;
-      }
-      .nav-link:hover span {
-        transform: translate3d(0, -100%, 0);
-      }
-      .nav-link:hover .alt {
-        transform: none;
       }
       .nav-link.on {
         color: var(--bone);
@@ -1550,12 +1539,6 @@
           line-height: 1.2;
           transform: none !important;
         }
-        .nav-links .nav-link .alt {
-          position: static;
-          margin-top: 6px;
-          font-size: 10px;
-          color: var(--muted);
-        }
         /* The links panel leaves the flow to become the slide-in sheet, taking its
      margin-left:auto with it, so without this the burger sits tucked against
      the wordmark instead of out at the edge where a thumb reaches. */
@@ -1816,25 +1799,20 @@
       }
 
       /* — closing B · gallery: the title hangs vertically on the right while the
-     chapter mark, the last line and the call to action run down the left. */
+     closing line and the call to action sit on the left. */
       body[data-layout-closing="b"] .fin {
         display: grid;
         grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
-        grid-template-rows: auto auto auto;
+        grid-template-rows: auto auto;
         align-content: center;
         align-items: end;
         text-align: left;
         column-gap: clamp(40px, 7vw, 120px);
         row-gap: clamp(16px, 2.6vh, 30px);
       }
-      body[data-layout-closing="b"] .fin .eyebrow {
-        grid-column: 1;
-        grid-row: 1;
-        margin: 0;
-      }
       body[data-layout-closing="b"] .fin h2 {
         grid-column: 2;
-        grid-row: 1 / 4;
+        grid-row: 1 / 3;
         align-self: center;
         justify-self: end;
         font-size: clamp(52px, 6vw, 82px);
@@ -1842,12 +1820,12 @@
       }
       body[data-layout-closing="b"] .fin p {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 1;
         margin: 0;
       }
       body[data-layout-closing="b"] .fin .cta {
         grid-column: 1;
-        grid-row: 3;
+        grid-row: 2;
         justify-self: start;
         margin-top: 4px;
       }
@@ -1883,7 +1861,7 @@
       }
       body[data-layout-footer="b"] .foot-base {
         display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: minmax(0, 1fr) auto;
       }
       body[data-layout-footer="b"] .foot-base span:last-child {
         text-align: right;
@@ -2491,16 +2469,16 @@
       </a>
       <nav class="nav-links" id="navlinks">
         <a class="nav-link" href="#gate" data-cursor
-          ><span>Tentang</span><span class="alt">PROFIL</span></a
+          ><span>Tentang</span></a
         >
         <a class="nav-link" href="#pathways" data-cursor
-          ><span>Divisi</span><span class="alt">DIVISI</span></a
+          ><span>Divisi</span></a
         >
         <a class="nav-link" href="#lessons" data-cursor
-          ><span>Kegiatan</span><span class="alt">AGENDA</span></a
+          ><span>Kegiatan</span></a
         >
         <a class="nav-link" href="#eternity" data-cursor
-          ><span>Kontak</span><span class="alt">KONTAK</span></a
+          ><span>Kontak</span></a
         >
       </nav>
       <button class="nav-burger" aria-label="Menu" data-cursor>
@@ -2512,17 +2490,12 @@
       <!-- ============================================================ hero -->
       <section class="hero" id="hero" data-cam="0">
         <div class="hero-top">
-          <div class="eyebrow" data-rv="fade">
-            <span class="dot"></span> Bab 00 — Gerbang HIMTIF
-          </div>
           <h1 class="display h-hero">
-            <span class="mask-line"><span>Berkarya,</span></span>
-            <span class="mask-line"><span>berinovasi,</span></span>
-            <span class="mask-line"><span>mengabdi.</span></span>
+            <span class="mask-line"><span>Berkarya</span></span>
+            <span class="mask-line"><span>bersama.</span></span>
           </h1>
           <p class="hero-sub body" data-rv="up">
-            Masuki rumah besar Teknik Informatika UNU Sulawesi Tenggara, tempat
-            kode, karya, dan kekeluargaan bertemu.
+            Rumah untuk belajar dan berkarya bersama mahasiswa Informatika.
           </p>
         </div>
 
@@ -2532,64 +2505,9 @@
           <div class="hero-cue" data-rv="fade">
             <span>Gulir untuk masuk</span><span class="track"><i></i></span>
           </div>
-          <div class="chapters" id="chips">
-            <div class="chip" data-chip="0" data-rv="up" data-cursor>
-              <span class="num">01</span>
-              <span class="tx"
-                ><b>Tentang Kami</b>
-                <p>Kenali rumah dan keluarga besar Teknik Informatika.</p></span
-              >
-            </div>
-            <div class="chip" data-chip="1" data-rv="up" data-cursor>
-              <span class="num">02</span>
-              <span class="tx"
-                ><b>Divisi</b>
-                <p>Jelajahi lima divisi yang menggerakkan himpunan.</p></span
-              >
-            </div>
-            <div class="chip" data-chip="2" data-rv="up" data-cursor>
-              <span class="num">03</span>
-              <span class="tx"
-                ><b>Program Kerja</b>
-                <p>Program nyata, dari pelatihan hingga pengabdian.</p></span
-              >
-            </div>
-            <div class="chip" data-chip="3" data-rv="up" data-cursor>
-              <span class="num">04</span>
-              <span class="tx"
-                ><b>Agenda</b>
-                <p>Ikuti kegiatan yang hidup sepanjang tahun.</p></span
-              >
-            </div>
-          </div>
         </div>
-
-        <a
-          class="peek"
-          href="#pathways"
-          data-view="3"
-          data-rv="fade"
-          data-cursor
-          aria-label="Preview: Sekretariat HIMTIF"
-        >
-          <!-- data-frame, or the live view is blitted over the whole anchor and
-         runs on down behind the caption instead of stopping at the frame -->
-          <span class="peek-fr" data-frame></span>
-          <span class="peek-play"
-            ><svg viewBox="0 0 22 22" fill="none">
-              <path d="M8 5.6 16.4 11 8 16.4z" fill="#dfe7e0" /></svg
-          ></span>
-          <span class="peek-cap"
-            ><b class="jp">HIMTIF</b
-            ><i>Sekretariat — sebelum acara dimulai</i></span
-          >
-        </a>
 
         <div class="word-fb" aria-hidden="true">HIMTIF</div>
-
-        <div class="hero-side" data-rv="up">
-          <span class="v jp">HIMTIF</span>
-        </div>
       </section>
 
       <!-- ============================================================ chapter I -->
@@ -2629,7 +2547,7 @@
         </div>
         <div class="sec-head" data-rv="fade">
           <span class="k"><b>01</b> — Tentang Kami</span
-          ><span class="rule"></span><span class="k jp">TENTANG</span>
+          ><span class="rule"></span>
         </div>
         <div class="gate-grid">
           <h2 class="display h-sec" data-rv="up">
@@ -2637,9 +2555,8 @@
           </h2>
           <div class="gate-copy">
             <p class="lead" data-rv="up">
-              HIMTIF mempertemukan mahasiswa Teknik Informatika UNU Sulawesi
-              Tenggara untuk berbagi ilmu, mengembangkan karya, dan tumbuh
-              bersama sebagai satu keluarga.
+              Keluarga mahasiswa Teknik Informatika UNU Sulawesi Tenggara
+              untuk berbagi ilmu dan mewujudkan karya.
             </p>
             <a class="arrowlink" href="#pathways" data-rv="fade" data-cursor>
               <span>Masuki lebih jauh</span>
@@ -2703,7 +2620,7 @@
         </div>
         <div class="sec-head" data-rv="fade">
           <span class="k"><b>02</b> — Ruang Berkarya</span
-          ><span class="rule"></span><span class="k jp">DIVISI</span>
+          ><span class="rule"></span>
         </div>
         <div class="cards" id="cards">
           <article class="card" data-rv="up" data-view="0" data-cursor>
@@ -2729,11 +2646,11 @@
                 "
               ></i>
               <div class="card-lab">
-                <b>Akademik</b><span class="jp">AKADEMIK</span>
+                <b>Akademik</b>
               </div>
             </div>
             <div class="card-meta">
-              <span>Kelas, pelatihan, dan riset</span><span>01 / 03</span>
+              <span>Kelas, pelatihan, dan riset</span>
             </div>
           </article>
           <article class="card" data-rv="up" data-view="1" data-cursor>
@@ -2759,11 +2676,11 @@
                 "
               ></i>
               <div class="card-lab">
-                <b>Pengabdian</b><span class="jp">SOSIAL</span>
+                <b>Pengabdian</b>
               </div>
             </div>
             <div class="card-meta">
-              <span>Bakti sosial dan pengabdian</span><span>02 / 03</span>
+              <span>Bakti sosial dan pengabdian</span>
             </div>
           </article>
           <article class="card" data-rv="up" data-view="2" data-cursor>
@@ -2789,11 +2706,11 @@
                 "
               ></i>
               <div class="card-lab">
-                <b>Kreativitas</b><span class="jp">KREATIF</span>
+                <b>Kreativitas</b>
               </div>
             </div>
             <div class="card-meta">
-              <span>Karya, lomba, dan media</span><span>03 / 03</span>
+              <span>Karya, lomba, dan media</span>
             </div>
           </article>
         </div>
@@ -2836,45 +2753,44 @@
         </div>
         <div class="sec-head" data-rv="fade">
           <span class="k"><b>03</b> — Program Kerja</span
-          ><span class="rule"></span><span class="k jp">PROKER</span>
+          ><span class="rule"></span>
         </div>
         <div class="cur-head">
           <h2 class="display h-sec" data-rv="up">
             Belajar. Berkarya. Berbagi.
           </h2>
           <p class="body-lg" data-rv="up">
-            Temukan kegiatan untuk mengasah kemampuan, berbagi pengalaman,
-            dan berkontribusi.
+            Asah kemampuan dan perluas pengalamanmu.
           </p>
         </div>
         <div class="cur" id="cur">
           <div class="les" data-les="0" data-cursor>
             <span class="k">01</span>
-            <h3>Masa Keakraban<em class="jp">MAKRAB</em></h3>
+            <h3>Masa Keakraban</h3>
             <p>Saling mengenal dan membangun kebersamaan.</p>
             <span class="t">3 hari</span><i class="bar"></i>
           </div>
           <div class="les" data-les="1" data-cursor>
             <span class="k">02</span>
-            <h3>Pelatihan Pemrograman<em class="jp">KELAS</em></h3>
+            <h3>Pelatihan Pemrograman</h3>
             <p>Mengasah keterampilan web, mobile, dan jaringan.</p>
             <span class="t">4 sesi</span><i class="bar"></i>
           </div>
           <div class="les" data-les="2" data-cursor>
             <span class="k">03</span>
-            <h3>Bakti Sosial<em class="jp">SOSIAL</em></h3>
+            <h3>Bakti Sosial</h3>
             <p>Berbagi ilmu dan mengabdi kepada masyarakat.</p>
             <span class="t">2 hari</span><i class="bar"></i>
           </div>
           <div class="les" data-les="3" data-cursor>
             <span class="k">04</span>
-            <h3>Seminar &amp; Workshop<em class="jp">SEMINAR</em></h3>
+            <h3>Seminar &amp; Workshop</h3>
             <p>Belajar bersama praktisi dan alumni.</p>
             <span class="t">Bulanan</span><i class="bar"></i>
           </div>
           <div class="les" data-les="4" data-cursor>
             <span class="k">05</span>
-            <h3>Lomba &amp; Delegasi<em class="jp">LOMBA</em></h3>
+            <h3>Lomba &amp; Delegasi</h3>
             <p>Membawa karya ke kompetisi mahasiswa.</p>
             <span class="t">Tahunan</span><i class="bar"></i>
           </div>
@@ -2926,7 +2842,6 @@
             />
           </span>
         </div>
-        <div class="eyebrow" data-rv="fade">Bab 04 — Bergabunglah</div>
         <h2 class="display" data-rv="up">Bergabunglah</h2>
         <p class="body-lg" data-rv="up">
           Mari belajar, berkarya, dan tumbuh bersama HIMTIF.
@@ -3001,7 +2916,6 @@
         </div>
         <div class="foot-base">
           <span>© 2026 HIMTIF — Teknik Informatika UNU Sulawesi Tenggara</span>
-          <span class="jp">Berkarya • Berinovasi • Mengabdi</span>
           <span>Kendari · Sulawesi Tenggara</span>
         </div>
       </footer>
@@ -4802,13 +4716,13 @@
           scene,
           camera,
           maxAniso = 1;
-        const HI = qs("q", "high");
+        const HI = qs("q", COARSE || REDUCE ? "low" : "high");
         const LOW = HI === "low";
         const WANT_POST = qs("post", "1") !== "0";
         const WANT_SHADOW = qs("shadow", LOW ? "0" : "1") !== "0";
         const DPR_CAP = clamp(qn("dpr", 2), 1, 2);
-        /* Preserve a fixed high-resolution buffer; never reduce detail during animation. */
-        const PERF = { scale: 1, acc: 0, n: 0, locked: true };
+        /* Render at native screen density; avoid both forced supersampling and
+           changing resolution while scrolling. */
 
         function initGL() {
           if (qs("nogl", "0") !== "0" || !window.THREE)
@@ -4820,7 +4734,7 @@
             powerPreference: "high-performance",
           });
           renderer.setPixelRatio(
-            Math.min(Math.max(devicePixelRatio || 1, 1.5), DPR_CAP),
+            Math.min(devicePixelRatio || 1, DPR_CAP),
           );
           /* updateStyle stays on: the stylesheet sizes the canvas at 100% of the
      initial containing block, which is the very box that runs wide on a
@@ -6635,10 +6549,10 @@ void main () {
   outColor = vec4(vec3(uDark) * a, a);
 }`;
 
-        const CL_SEG = 96,
+        const CL_SEG = 48,
           CL_NODES = CL_SEG + 1,
           CL_DT = 1 / 120;
-        const CL_WAVE = 30,
+        const CL_WAVE = 30 * (CL_SEG / 96),
           CL_STIFF = 0.55,
           CL_GAIN = 5.0,
           CL_BLEED = 48;
@@ -6787,10 +6701,18 @@ void main () {
             );
           }
 
+          let resW = 1,
+            resH = 1,
+            outW = 1,
+            outH = 1;
           function syncSize() {
+            resW = Math.max(wrapper.clientWidth, 1);
+            resH = Math.max(wrapper.clientHeight, 1);
+            outW = Math.max(output.clientWidth, 1);
+            outH = Math.max(output.clientHeight, 1);
             const dpr = Math.min(devicePixelRatio || 1, 2);
-            const w = Math.max(1, Math.round(output.clientWidth * dpr));
-            const h = Math.max(1, Math.round(output.clientHeight * dpr));
+            const w = Math.max(1, Math.round(outW * dpr));
+            const h = Math.max(1, Math.round(outH * dpr));
             if (output.width !== w || output.height !== h) {
               output.width = w;
               output.height = h;
@@ -7006,10 +6928,6 @@ void main () {
             config.backing === "auto" ? [0.02, 0.026, 0.035] : config.backing;
 
           function draw() {
-            const resW = Math.max(wrapper.clientWidth, 1),
-              resH = Math.max(wrapper.clientHeight, 1);
-            const outW = Math.max(output.clientWidth, 1),
-              outH = Math.max(output.clientHeight, 1);
             const light = Math.min(Math.max(config.light, 0), 1);
             const radius = Math.max(config.cornerRadius, 0);
             const lum =
@@ -7082,8 +7000,8 @@ void main () {
             }
             const delta = Math.min((now - last) / 1000, 1 / 20);
             last = now;
-            const width = Math.max(wrapper.clientWidth, 1),
-              height = Math.max(wrapper.clientHeight, 1);
+            const width = resW,
+              height = resH;
             if (!REDUCE) {
               const t = simTime;
               const target = Math.max(
@@ -7123,7 +7041,7 @@ void main () {
             raf = requestAnimationFrame(frame);
           }
           function start() {
-            if (dead || running || !visible) return;
+            if (dead || running || !visible || document.hidden) return;
             running = true;
             last = performance.now();
             raf = requestAnimationFrame(frame);
@@ -7134,7 +7052,7 @@ void main () {
             upload();
             start();
           });
-          ro.observe(output);
+          ro.observe(wrapper);
           const io = new IntersectionObserver((es) => {
             visible = es[es.length - 1]
               ? es[es.length - 1].isIntersecting
@@ -7171,10 +7089,8 @@ void main () {
 
           syncSize();
           upload();
-          compose(
-            Math.max(wrapper.clientWidth, 1),
-            Math.max(wrapper.clientHeight, 1),
-          );
+          compose(resW, resH);
+          draw();
           return {
             refresh() {
               syncSize();
@@ -7213,8 +7129,8 @@ void main () {
         }
 
         function buildCardCloth() {
-          if (COARSE) return; /* no pointer to brush it with */
-          $$(".cards .card-fr").forEach((fr) => {
+          if (COARSE || REDUCE) return;
+          const initialize = (fr) => {
             const url = (getComputedStyle(fr).backgroundImage.match(
               /url\(["']?([^"')]+)/,
             ) || [])[1];
@@ -7270,7 +7186,18 @@ void main () {
             };
             img.onerror = () => {};
             img.src = url;
-          });
+          };
+          const pending = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                pending.unobserve(entry.target);
+                initialize(entry.target);
+              }
+            },
+            { rootMargin: "160px 0px" },
+          );
+          $$(".cards .card-fr").forEach((fr) => pending.observe(fr));
         }
 
         function buildLights() {
@@ -7373,9 +7300,10 @@ void main () {
             h,
             Object.assign({}, O, { depthBuffer: true, samples: LOW ? 0 : 2 }),
           );
-          let lw = Math.max(2, w >> 1),
-            lh = Math.max(2, h >> 1);
-          const N = 4;
+          // Bloom is deliberately soft; only the scene needs native resolution.
+          let lw = Math.max(2, w >> 2),
+            lh = Math.max(2, h >> 2);
+          const N = 3;
           for (let i = 0; i < N; i++) {
             POST.levels.push({
               a: new THREE.WebGLRenderTarget(lw, lh, O),
@@ -7437,11 +7365,7 @@ void main () {
               "vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14), 0.0, 1.0); }\n" +
               "void main(){\n" +
               " vec2 d = vUv - 0.5; float r2 = dot(d,d);\n" +
-              " float ca = uCA * (0.30 + r2*2.6) * 0.0013;\n" +
-              " vec3 c;\n" +
-              " c.r = texture2D(tS, vUv + d*ca).r;\n" +
-              " c.g = texture2D(tS, vUv).g;\n" +
-              " c.b = texture2D(tS, vUv - d*ca).b;\n" +
+              " vec3 c = texture2D(tS, vUv).rgb;\n" +
               " c += texture2D(tB, vUv).rgb * uBloom;\n" +
               " c *= uExp;\n" +
               " c = aces(c);\n" +
@@ -7451,8 +7375,6 @@ void main () {
               " c = mix(c, c*vec3(1.035,0.995,0.968), smoothstep(0.50,1.0,l)*0.26);\n" /* warm highs   */ +
               " float v = smoothstep(1.22, 0.26, length(d*vec2(1.0,0.94))*1.42);\n" +
               " c *= mix(1.0, v, uVig);\n" +
-              " float g = fract(sin(dot(vUv*uRes + uT*137.0, vec2(12.9898,78.233)))*43758.5453);\n" +
-              " c += (g-0.5)*uGrain;\n" +
               " c *= uFade;\n" +
               " vec3 e = pow(max(c,0.0), vec3(1.0/2.2));\n" +
               /* A touch of contrast, applied after the encode rather than before it:
@@ -8311,16 +8233,18 @@ void main () {
           return a;
         }
         function renderCards(rt) {
-          if (!CARDS.length) return;
+          // Touch/reduced-motion cards use the authored stills, avoiding another
+          // full scene render behind their opaque image backgrounds.
+          if (COARSE || REDUCE || !CARDS.length) return;
           let drew = false;
           for (let i = 0; i < CARDS.length; i++) {
-            const C = CARDS[i],
-              r = C.el.getBoundingClientRect();
+            const C = CARDS[i];
+            if (C.el.classList.contains("on-cloth")) continue;
+            const r = C.el.getBoundingClientRect();
             if (r.bottom < -40 || r.top > VP_H + 40 || r.width < 4) continue;
             if (cardAlpha(C.el) < 0.995) continue;
             /* a card carrying cloth has no background left of its own, so the blit
        would show through the fabric's rounded corners and past its edges */
-            if (C.el.classList.contains("on-cloth")) continue;
             if (!WANT_POST) {
               /* debug path: straight in */
               setRegion(rt, r.left, VP_H - r.bottom, r.width, r.height);
@@ -8366,16 +8290,33 @@ void main () {
    from a live read so the boot-time `apply()` sees a real number. */
         let VP_H = vpH(),
           HERO_EXIT = null;
+        const viewport = { width: 0, height: 0, pixelRatio: 0 };
+        let frameHandle = null,
+          resizeHandle = null;
+
+        function scheduleResize() {
+          if (resizeHandle !== null || document.hidden) return;
+          resizeHandle = requestAnimationFrame(() => {
+            resizeHandle = null;
+            resize();
+          });
+        }
 
         function resize() {
           const w = vpW(),
             h = vpH();
+          const pixelRatio = Math.min(devicePixelRatio || 1, DPR_CAP);
+          if (
+            viewport.width === w &&
+            viewport.height === h &&
+            viewport.pixelRatio === pixelRatio
+          ) return;
+          viewport.width = w;
+          viewport.height = h;
+          viewport.pixelRatio = pixelRatio;
           VP_H = h;
           document.documentElement.style.setProperty("--vw", w + "px");
-          renderer.setPixelRatio(
-            Math.min(Math.max(devicePixelRatio || 1, 1.5), DPR_CAP) *
-              PERF.scale,
-          );
+          renderer.setPixelRatio(pixelRatio);
           renderer.setSize(w, h, true);
           camera.aspect = w / h;
           camera.updateProjectionMatrix();
@@ -8384,8 +8325,8 @@ void main () {
           if (WANT_POST && POST.scene) {
             POST.scene.setSize(pw, ph);
             POST.comp.uniforms.uRes.value.set(pw, ph);
-            let lw = Math.max(2, pw >> 1),
-              lh = Math.max(2, ph >> 1);
+            let lw = Math.max(2, pw >> 2),
+              lh = Math.max(2, ph >> 2);
             POST.levels.forEach((L) => {
               L.a.setSize(lw, lh);
               L.b.setSize(lw, lh);
@@ -8397,7 +8338,7 @@ void main () {
           }
           /* multisampling is the first thing to go when the budget tightens */
           if (POST.scene) {
-            const want = !LOW && PERF.scale > 0.78 ? 2 : 0;
+            const want = LOW ? 0 : 2;
             if (POST.scene.samples !== want) {
               POST.scene.samples = want;
               POST.scene.dispose();
@@ -8522,32 +8463,14 @@ void main () {
         }
 
         function frame(now) {
-          if (!running) return;
+          frameHandle = null;
+          if (!running || document.hidden) return;
           const raw = (now - tPrev) / 1000 || 0;
           const dt = Math.min(raw, 0.05); /* animation never jumps … */
           tPrev = now;
           clock += dt;
           fadeIn = INTRO.t0 ? sat((now - INTRO.t0) / 700) : 1;
 
-          if (!PERF.locked && clock > 2.2) {
-            PERF.acc += raw;
-            PERF.n++; /* … but the governor reads the truth */
-            if (PERF.n >= 40 || PERF.acc > 0.9) {
-              const avg = PERF.acc / PERF.n;
-              PERF.acc = 0;
-              PERF.n = 0;
-              if (avg > 0.023 && PERF.scale > 0.55) {
-                PERF.scale = Math.max(
-                  0.55,
-                  PERF.scale * (avg > 0.05 ? 0.64 : 0.85),
-                );
-                resize();
-              } else if (avg < 0.0138 && PERF.scale < 1) {
-                PERF.scale = Math.min(1, PERF.scale + 0.08);
-                resize();
-              }
-            }
-          }
           RIG.prog = progressFor(scrollY);
           RIG.smooth = REDUCE ? RIG.prog : damp(RIG.smooth, RIG.prog, 5.2, dt);
           RIG.mx = damp(RIG.mx, RIG.tmx, 2.6, dt);
@@ -8566,9 +8489,16 @@ void main () {
         }
         const TIMER = qs("driver", "raf") === "timer";
         function queue() {
-          TIMER
+          if (!running || document.hidden || frameHandle !== null) return;
+          frameHandle = TIMER
             ? setTimeout(() => frame(performance.now()), 16)
             : requestAnimationFrame(frame);
+        }
+        function cancelFrame() {
+          if (frameHandle === null) return;
+          if (TIMER) clearTimeout(frameHandle);
+          else cancelAnimationFrame(frameHandle);
+          frameHandle = null;
         }
 
         /* ======================================================== 14 · booting */
@@ -8702,20 +8632,20 @@ void main () {
         }
 
         function start() {
-          addEventListener(
-            "resize",
-            () => {
-              resize();
-            },
-            { passive: true },
-          );
-          addEventListener("orientationchange", () => setTimeout(resize, 250));
+          addEventListener("resize", scheduleResize, { passive: true });
+          addEventListener("orientationchange", scheduleResize, { passive: true });
           document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
               running = false;
+              cancelFrame();
+              if (resizeHandle !== null) {
+                cancelAnimationFrame(resizeHandle);
+                resizeHandle = null;
+              }
             } else if (!running) {
               running = true;
               tPrev = performance.now();
+              scheduleResize();
               queue();
             }
           });
@@ -8753,7 +8683,7 @@ void main () {
               REDUCE ? 0 : 340,
             );
           }
-          running = true;
+          running = !document.hidden;
           tPrev = performance.now();
           INTRO.t0 =
             shot !== null
