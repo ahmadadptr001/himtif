@@ -45,7 +45,7 @@
       }
       html {
         -webkit-text-size-adjust: 100%;
-        scroll-behavior: auto;
+        scroll-behavior: smooth;
       }
       body {
         margin: 0;
@@ -7883,7 +7883,7 @@ void main () {
    entrance reveal, and an inline opacity set at rest would pre-empt it. */
         function wireHeroExit() {
           const hero = $("#hero");
-          if (!hero) return;
+          if (!hero) return null;
           /* at = where in the exit it starts, span = how long it takes to go */
           const seq = [
             { el: $(".peek"), at: 0.0, span: 0.26, blur: 10 },
@@ -7905,9 +7905,27 @@ void main () {
               span: 0.3,
             } /* its transform is the centring -50% */,
           ].filter((o) => o.el);
+          /* The preview's blur is the one expensive thing in this sequence: it is a
+     raster, not a composite, so every new radius re-rasterises a full-bleed
+     element. Driving it from the scroll event meant a new radius per event —
+     more than one per frame on a high-rate wheel — and the top of the page is
+     where that showed worst. Two changes, neither of which moves a value the
+     eye can resolve:
+
+       · the sequence now runs on the frame loop beside the camera, so it is
+         written at most once per frame however many events arrive;
+       · the radius is quantised to BLUR_STEPS across its range, so the exit
+         re-rasterises a handful of times instead of continuously. It spans
+         only a fraction of a screen, so the steps are not resolvable.
+
+     Every other value is written exactly as it was. */
+          const BLUR_STEPS = 5;
+          seq.forEach((o) => {
+            o.last = { op: null, blur: null, pe: null };
+          });
           let on = false;
           const apply = () => {
-            const t = clamp(scrollY / Math.max(1, vpH() * 0.58), 0, 1);
+            const t = clamp(scrollY / Math.max(1, VP_H * 0.58), 0, 1);
             if (t <= 0) {
               if (!on) return;
               seq.forEach((o) => {
@@ -7916,32 +7934,55 @@ void main () {
                 o.el.style.filter = "";
                 o.el.style.pointerEvents = "";
                 o.el.style.transition = "";
+                o.last.op = o.last.blur = o.last.pe = null;
               });
               on = false;
               return;
             }
             on = true;
             seq.forEach((o) => {
+              const a = 1 - smooth(o.at, o.at + o.span, t);
+              const op = a.toFixed(3);
+              const step = o.blur ? o.blur / BLUR_STEPS : 0;
+              const blur = step
+                ? Math.round(((1 - a) * o.blur) / step) * step
+                : -1;
+              const pe = a < 0.05 ? 1 : 0;
+              /* re-writing a value that has not moved is cheap but not free, and
+         the quantised radius makes those repeats the common case */
+              if (op === o.last.op && blur === o.last.blur && pe === o.last.pe)
+                return;
+              o.last.op = op;
+              o.last.blur = blur;
+              o.last.pe = pe;
               /* these carry the reveal's own .9s opacity transition, which would
          animate every value written here — the fade would then trail the
          scroll by most of a second and stop reading as scroll-driven */
               o.el.style.transition = "none";
-              const a = 1 - smooth(o.at, o.at + o.span, t);
-              o.el.style.opacity = a.toFixed(3);
+              o.el.style.opacity = op;
               if (o.shift)
                 o.el.style.transform =
                   "translate3d(0," + ((1 - a) * 15).toFixed(1) + "px,0)";
               if (o.blur)
-                o.el.style.filter =
-                  a > 0.999
-                    ? ""
-                    : "blur(" + ((1 - a) * o.blur).toFixed(1) + "px)";
-              o.el.style.pointerEvents = a < 0.05 ? "none" : "";
+                o.el.style.filter = blur > 0 ? "blur(" + blur + "px)" : "";
+              o.el.style.pointerEvents = pe ? "none" : "";
             });
           };
-          addEventListener("scroll", apply, { passive: true });
+          /* The sequence is driven by `frame()` now — once per frame, instead of
+     once per scroll event; see the note above. The scroll listener survives
+     only for the no-WebGL fallback, where no frame loop ever starts, and it
+     defers to the loop whenever one is running. Resize keeps its own, since
+     the viewport can change while the sequence is parked. */
+          addEventListener(
+            "scroll",
+            () => {
+              if (!running) apply();
+            },
+            { passive: true },
+          );
           addEventListener("resize", apply, { passive: true });
           apply();
+          return apply;
         }
 
         function wireNav() {
@@ -8080,7 +8121,33 @@ void main () {
           let x = vpW() / 2,
             y = vpH() / 2,
             tx2 = x,
-            ty = y;
+            ty = y,
+            live = false;
+          /* The dot only needs a frame while it is still travelling. Left as an
+     unconditional loop this was a second 60fps rAF running beside the
+     render loop for the whole life of the page — competing for the same
+     main thread on every scroll frame — to redraw a dot that is, most of
+     the time, standing still. It now parks itself once settled, and the
+     next pointermove wakes it. The first write happens eagerly so the dot
+     opens centred rather than at its CSS default. */
+          dot.style.transform =
+            "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+          function tick() {
+            x = lerp(x, tx2, 0.18);
+            y = lerp(y, ty, 0.18);
+            const done = Math.abs(x - tx2) < 0.1 && Math.abs(y - ty) < 0.1;
+            if (done) {
+              x = tx2;
+              y = ty;
+            }
+            dot.style.transform =
+              "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+            if (done || document.hidden) {
+              live = false;
+              return;
+            }
+            requestAnimationFrame(tick);
+          }
           addEventListener(
             "pointermove",
             (e) => {
@@ -8088,6 +8155,10 @@ void main () {
               ty = e.clientY;
               RIG.tmx = (e.clientX / vpW()) * 2 - 1;
               RIG.tmy = -((e.clientY / vpH()) * 2 - 1);
+              if (!live) {
+                live = true;
+                requestAnimationFrame(tick);
+              }
             },
             { passive: true },
           );
@@ -8097,13 +8168,6 @@ void main () {
               dot.classList.remove("act"),
             );
           });
-          (function tick() {
-            x = lerp(x, tx2, 0.18);
-            y = lerp(y, ty, 0.18);
-            dot.style.transform =
-              "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
-            requestAnimationFrame(tick);
-          })();
         }
 
         function makeGrain() {
@@ -8252,14 +8316,14 @@ void main () {
           for (let i = 0; i < CARDS.length; i++) {
             const C = CARDS[i],
               r = C.el.getBoundingClientRect();
-            if (r.bottom < -40 || r.top > vpH() + 40 || r.width < 4) continue;
+            if (r.bottom < -40 || r.top > VP_H + 40 || r.width < 4) continue;
             if (cardAlpha(C.el) < 0.995) continue;
             /* a card carrying cloth has no background left of its own, so the blit
        would show through the fabric's rounded corners and past its edges */
             if (C.el.classList.contains("on-cloth")) continue;
             if (!WANT_POST) {
               /* debug path: straight in */
-              setRegion(rt, r.left, vpH() - r.bottom, r.width, r.height);
+              setRegion(rt, r.left, VP_H - r.bottom, r.width, r.height);
               renderer.clear(true, true, false);
               aimCard(C, r.width / r.height);
               renderer.render(scene, C.cam);
@@ -8279,7 +8343,7 @@ void main () {
               renderer.render(scene, C.cam);
               C.dirty = false;
             }
-            setRegion(rt, r.left, vpH() - r.bottom, r.width, r.height);
+            setRegion(rt, r.left, VP_H - r.bottom, r.width, r.height);
             POST.up.blending = THREE.NoBlending;
             POST.up.uniforms.uAmt.value = 1;
             POST.up.uniforms.tS.value = buf.texture;
@@ -8295,10 +8359,18 @@ void main () {
           clock = 0,
           fadeIn = 0;
         const INTRO = { t0: 0 };
+        /* Viewport height is read all over the frame path — the hero exit, every
+   card blit. Once styles have been written earlier in the same frame each
+   `clientHeight` read is a forced layout flush, so it is measured once per
+   frame here and refreshed only when the viewport actually changes. Seeded
+   from a live read so the boot-time `apply()` sees a real number. */
+        let VP_H = vpH(),
+          HERO_EXIT = null;
 
         function resize() {
           const w = vpW(),
             h = vpH();
+          VP_H = h;
           document.documentElement.style.setProperty("--vw", w + "px");
           renderer.setPixelRatio(
             Math.min(Math.max(devicePixelRatio || 1, 1.5), DPR_CAP) *
@@ -8434,8 +8506,11 @@ void main () {
         let FRAME = 0;
         function render() {
           FRAME++;
+          /* No explicit clear here: `scene.background` is set (see initGL) and
+     `autoClear` is left at its default, so `renderer.render()` below
+     already wipes colour and depth. Clearing first was a second identical
+     pass over the whole buffer, every frame. */
           renderer.setRenderTarget(WANT_POST ? POST.scene : null);
-          renderer.clear(true, true, false);
           renderer.render(scene, camera);
           renderCards(WANT_POST ? POST.scene : null);
           renderer.setRenderTarget(null);
@@ -8486,6 +8561,7 @@ void main () {
           applyCamera();
           updateWorld(dt);
           render();
+          if (HERO_EXIT) HERO_EXIT();
           queue();
         }
         const TIMER = qs("driver", "raf") === "timer";
@@ -8586,7 +8662,7 @@ void main () {
           wireReveals();
           wireForegroundStages();
           wireNav();
-          wireHeroExit();
+          HERO_EXIT = wireHeroExit();
           wireFocus();
           wireCursor();
           document.body.classList.add("is-locked");
